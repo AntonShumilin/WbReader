@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+</head>
+<body>
+<tr th:each="entry: ${contentMap}">
+    <p><a  th:href="@{'/page/' + ${entry.key + 1}}" th:text="${entry.value} + ' стр.' + ${entry.key + 1}"></a></p>
+<!--    <p th:text="${entry.key} + ' ' + ${entry.value}"></p>-->
+</tr>
+</body>
+</html>

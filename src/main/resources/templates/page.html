@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<tr th:each="author : ${authors}">
+    <p th:text="${author}"> </p>
+</tr>
+<p th:text="${title}"></p>
+<p></p>
+<p th:text="'cтр. ' + ${pageNumber} + ' из ' + ${pageListSize}"></p>
+
+<div th:if="${pageNumber} > 1">
+    <a  th:href="@{'/page/' + ${pageNumber-1}}">назад</a>
+</div>
+<div th:if="${pageNumber} < ${pageListSize}">
+    <a  th:href="@{'/page/' + ${pageNumber+1}}">вперед</a>
+</div>
+
+<p>
+<a  href="/content">Оглавление</a>
+</p>
+
+<tr th:each="line : ${lines}">
+    <p th:text="${line}"></p>
+</tr>
+
+</body>
+</html>
