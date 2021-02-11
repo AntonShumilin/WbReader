@@ -13,7 +13,7 @@ import java.util.*;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -24,6 +24,10 @@ public class Book {
 
     @Column
     private String url;
+
+    @ManyToOne (cascade=CascadeType.ALL)
+    @JoinColumn (name="user_id")
+    private User user;
 
     @Transient
     private TreeMap<Integer, String> content;
@@ -92,8 +96,16 @@ public class Book {
         }
     }
 
+    public User getUser() {
+        return user;
+    }
 
-//    public boolean loadBookMetaFromXml (String path)  {
+    public void setUser(User user) {
+        System.err.println("setUser" + user.getId());
+        this.user = user;
+    }
+
+    //    public boolean loadBookMetaFromXml (String path)  {
 //        boolean result = false;
 //        try {
 //            FictionBookDocument fb2 = FictionBookDocument.Factory.parse(new File(path));

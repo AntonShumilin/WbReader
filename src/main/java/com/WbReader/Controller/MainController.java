@@ -1,8 +1,11 @@
 package com.WbReader.Controller;
 
 
+import com.WbReader.CustomExeptions.BookNotFoundException;
 import com.WbReader.Data.Book;
+import com.WbReader.Data.User;
 import com.WbReader.Services.BookService;
+import com.WbReader.Services.UserService;
 import org.apache.xmlbeans.XmlException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +16,30 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
+//@Scope("session")
 public class MainController {
 
     @Autowired
     BookService bookService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     Logger LOGGER;
 
-    @GetMapping ("/")
-    public String catalog (Model model) {
-        model.addAttribute("bookList", bookService.getAllBooks());
+    @GetMapping ("/account")
+    public String catalog (Model model, Principal principal) {
+
+//        model.addAttribute("bookList", bookService.getAllBooks());
+        model.addAttribute("bookList", bookService.getAllBooksByUsername(principal.getName()));
         LOGGER.debug("Просмотр каталога");
-        return "catalog";
+        return "account";
     }
 
     @GetMapping("/chooseBook/{id}")
@@ -77,21 +87,45 @@ public class MainController {
     }
 
     @PostMapping ("/upload")
-    public String uploadFile (@RequestParam("file") MultipartFile file, Model model) throws IOException, XmlException {
-        bookService.addBook(file);
+    public String uploadFile (@RequestParam("file") MultipartFile file, Principal principal, Model model) throws IOException, XmlException {
+        User user = userService.findByUserName(principal.getName());
+        System.err.println(user.getId() + "id");
+        bookService.addBook(file, user);
         Book book = bookService.getCurrentBook();
         if (book != null) {
             LOGGER.info("Загружена книга: {} {}, файл {}", book.getTitle(),
                     book.getAuthor().replaceAll("\\n"," "),
                     Paths.get(book.getUrl()).getFileName().toString());
         }
-        return "redirect:/";
+        return "redirect:/account";
     }
+
+//    MULTIFILE UPLOAD
+//    @PostMapping ("/upload")
+//    public String uploadFile (@RequestParam("files") List<MultipartFile> files, Model model) throws IOException, XmlException {
+//
+//        System.err.println("upload");
+//        if (files == null) {
+//            System.err.println("null");
+//        }
+//
+//        for (MultipartFile file : files) {
+//            System.err.println("check");
+//            bookService.addBook(file);
+//        }
+//        Book book = bookService.getCurrentBook();
+//        if (book != null) {
+//            LOGGER.info("Загружена книга: {} {}, файл {}", book.getTitle(),
+//                    book.getAuthor().replaceAll("\\n"," "),
+//                    Paths.get(book.getUrl()).getFileName().toString());
+//        }
+//        return "redirect:/account";
+//    }
 
     @PostMapping ("/delete/{id}")
     public String deletBook (@PathVariable Long id, Model model) throws IOException, BookNotFoundException {
         bookService.deleteBook(id);
         LOGGER.info("Удалена книга: id: {}", id);
-        return "redirect:/";
+        return "redirect:/account";
     }
 }

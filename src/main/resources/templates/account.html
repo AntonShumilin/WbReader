@@ -5,6 +5,9 @@
     <!--    <title>Title</title>-->
 </head>
 <body>
+<div>
+    <a href="/upload"> Upload </a>
+</div>
 <tr th:each="book: ${bookList}">
     <p><a  th:href="@{'/chooseBook/' + ${book.id}}">
         <div th:text="${book.author}"> </div>

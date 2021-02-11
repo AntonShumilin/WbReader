@@ -1,8 +1,11 @@
 package com.WbReader.Services;
 
-import com.WbReader.Controller.BookNotFoundException;
+import com.WbReader.CustomExeptions.BookNotFoundException;
+import com.WbReader.CustomExeptions.CustomException;
 import com.WbReader.Data.Book;
 import com.WbReader.Data.BookRepo;
+import com.WbReader.Data.User;
+import com.WbReader.Data.UserRepo;
 import org.apache.xmlbeans.XmlException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,16 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Service
+//@Scope("session")
 public class BookService {
 
     Book currentBook;
 
     @Autowired
     BookRepo bookRepo;
+
+    @Autowired
+    UserRepo userRepo;
 
     @Autowired
     Logger LOGGER;
@@ -42,7 +49,7 @@ public class BookService {
 
     }
 
-    public boolean addBook(MultipartFile userFile) throws IOException, XmlException {
+    public boolean addBook(MultipartFile userFile, User user) throws IOException, XmlException {
         boolean result = false;
         Book book = new Book();
 
@@ -58,6 +65,8 @@ public class BookService {
                 bookParser.loadBookContentAndPageListFromXml();
                 String url = uploadFileDir + "/" + tmpFileName;
                 book.setUrl(url);
+                book.setUser(user);
+                System.err.println("save " + book.getUser().getId());
                 bookRepo.save(book);
                 Files.copy(tmpFile, Paths.get(url));
                 Files.delete(tmpFile);
@@ -68,7 +77,7 @@ public class BookService {
         return result;
     }
 
-    public boolean deleteBook(Long id) throws IOException, BookNotFoundException {
+    public boolean deleteBook(Long id) throws IOException, CustomException {
         boolean result = false;
         Book book = bookRepo.findById(id).orElseThrow(new BookNotFoundException("Ошибка при удалении книги id: " + id));
         if (book != null) {
@@ -80,7 +89,7 @@ public class BookService {
         return result;
     }
 
-    public Book getBookById(Long id) throws BookNotFoundException {
+    public Book getBookById(Long id) throws CustomException {
         return bookRepo.findById(id).orElseThrow(new BookNotFoundException("Ошибка при поиске книги id: " + id));
     }
 
@@ -90,6 +99,11 @@ public class BookService {
             bookList.add(book);
         }
         return bookList;
+    }
+
+    public List<Book> getAllBooksByUsername (String username) {
+        User user = userRepo.findByUsername(username);
+        return bookRepo.findByUser(user);
     }
 
     public Book getCurrentBook() {
