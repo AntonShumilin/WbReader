@@ -12,10 +12,10 @@ Register
     <div><label> Confirm Password: <input type="password" name="confirmPassword"/> </label></div>
     <div><input type="submit" value="Register"/></div>
 </form>
-<div th:if="${{message} != null}">
-    <p th:text="${message}"></p>
+<p></p>
+<div th:each="message : ${messageList}">
+    <div th:text="${message}"></div>
 </div>
-
 
 </body>
 </html>

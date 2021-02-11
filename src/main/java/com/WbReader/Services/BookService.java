@@ -25,6 +25,7 @@ import java.util.*;
 public class BookService {
 
     Book currentBook;
+//    HashMap<String, Book> cuppentBookMap = new HashMap<>();
 
     @Autowired
     BookRepo bookRepo;

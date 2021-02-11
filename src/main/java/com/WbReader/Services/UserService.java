@@ -1,7 +1,5 @@
 package com.WbReader.Services;
 
-import com.WbReader.CustomExeptions.UserAlreadyExistsException;
-import com.WbReader.Data.Role;
 import com.WbReader.Data.User;
 import com.WbReader.Data.UserRepo;
 import org.slf4j.Logger;
@@ -12,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,19 +33,16 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User findByUserName(String username) {
-        return (User)loadUserByUsername(username);
-
+    public Optional<User> findByUserName(String username) {
+        User user = userRepo.findByUsername(username);
+        System.err.println(user);
+        return Optional.ofNullable(user);
+//        return Optional.ofNullable(userRepo.findByUsername(username));
     }
 
-    public boolean addNewUser(User user) throws UserAlreadyExistsException {
-        User userFromDB = userRepo.findByUsername(user.getUsername());
-        if (userFromDB != null) {
-            throw new UserAlreadyExistsException("В базе уже есть пользователь с именем " +  user.getUsername());
-        }
+    public void addNewUser(User user)  {
         userRepo.save(user);
         LOGGER.info("Добавален новый пользователь: {} id: {}", user.getUsername(), user.getId());
-        return true;
     }
 
     public boolean deleteUser(Long userId) {

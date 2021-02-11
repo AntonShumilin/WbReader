@@ -15,7 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -27,7 +27,6 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy="id", fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
     Set<Book> books;
 
     public User() {

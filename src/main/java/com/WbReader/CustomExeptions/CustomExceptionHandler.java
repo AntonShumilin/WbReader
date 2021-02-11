@@ -30,8 +30,8 @@ public class CustomExceptionHandler {
     @ExceptionHandler({
             IOException.class,
             XmlException.class,
-            UserAlreadyExistsException.class,
-            UsernameNotFoundException.class
+            UsernameNotFoundException.class,
+            UserNotFoundException.class
     })
     public String handleIOException(Throwable t, Model model) {
         LOGGER.error(t.getMessage(), t);

@@ -10,13 +10,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
+class One {
+    Two twoProp;
+}
+
+class Two {
+    String threeProp;
+}
 
 public class TestStuff {
+
+    One oneProp;
 
     @Value("${upload.dir.location}")
     static String dd;
@@ -25,51 +31,53 @@ public class TestStuff {
 
     public static void main(String[] args) throws IOException, XmlException {
 
-        TreeMap<Integer, String> xmlContentMap = new TreeMap<>();
-        ArrayList<String> xmlPageList = new ArrayList<>();
 
-//        FictionBookDocument fb2 = FictionBookDocument.Factory.parse(new File("/home/thunder/1/Voyna_neudachnikov.fb2"));
-        FictionBookDocument fb2 = FictionBookDocument.Factory.parse(new File("/home/thunder/1/Ring.fb2"));
-
-        if (fb2 != null && fb2.getFictionBook() != null && fb2.getFictionBook().getBody() != null) {
-            BodyType body = fb2.getFictionBook().getBody();
-
-            StringBuilder sb = new StringBuilder();
-            SectionType [] sectionTypes = body.getSectionArray();
-            if (sectionTypes != null) {
-                readChildSections(sectionTypes, sb, xmlPageList, xmlContentMap);
-            }
-        }
-
-        String resultFile = "/home/thunder/1/result.txt";
-        Path resultPath = Paths.get(resultFile);
-        try  {
-            if (Files.exists(resultPath)) {
-                Files.delete(resultPath);
-            }
-
-            FileWriter fw = new FileWriter(resultFile);
-
-            for(Map.Entry<Integer,String> entry : xmlContentMap.entrySet()) {
-                fw.write("page " + entry.getKey() + " ");
-                fw.write(entry.getValue());
-            }
-
-            fw.flush();
-            for (int i = 0; i <xmlPageList.size(); i++) {
-                fw.write(" \n");
-                fw.write(" \n");
-                fw.write("СТРАНИЦА " + i);
-                fw.write(" \n");
-                fw.write(xmlPageList.get(i));
-                fw.flush();
-            }
-
-            fw.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//
+//        TreeMap<Integer, String> xmlContentMap = new TreeMap<>();
+//        ArrayList<String> xmlPageList = new ArrayList<>();
+//
+////        FictionBookDocument fb2 = FictionBookDocument.Factory.parse(new File("/home/thunder/1/Voyna_neudachnikov.fb2"));
+//        FictionBookDocument fb2 = FictionBookDocument.Factory.parse(new File("/home/thunder/1/Ring.fb2"));
+//
+//        if (fb2 != null && fb2.getFictionBook() != null && fb2.getFictionBook().getBody() != null) {
+//            BodyType body = fb2.getFictionBook().getBody();
+//
+//            StringBuilder sb = new StringBuilder();
+//            SectionType [] sectionTypes = body.getSectionArray();
+//            if (sectionTypes != null) {
+//                readChildSections(sectionTypes, sb, xmlPageList, xmlContentMap);
+//            }
+//        }
+//
+//        String resultFile = "/home/thunder/1/result.txt";
+//        Path resultPath = Paths.get(resultFile);
+//        try  {
+//            if (Files.exists(resultPath)) {
+//                Files.delete(resultPath);
+//            }
+//
+//            FileWriter fw = new FileWriter(resultFile);
+//
+//            for(Map.Entry<Integer,String> entry : xmlContentMap.entrySet()) {
+//                fw.write("page " + entry.getKey() + " ");
+//                fw.write(entry.getValue());
+//            }
+//
+//            fw.flush();
+//            for (int i = 0; i <xmlPageList.size(); i++) {
+//                fw.write(" \n");
+//                fw.write(" \n");
+//                fw.write("СТРАНИЦА " + i);
+//                fw.write(" \n");
+//                fw.write(xmlPageList.get(i));
+//                fw.flush();
+//            }
+//
+//            fw.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

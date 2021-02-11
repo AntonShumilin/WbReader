@@ -2,6 +2,8 @@ package com.WbReader.Controller;
 
 
 import com.WbReader.CustomExeptions.BookNotFoundException;
+import com.WbReader.CustomExeptions.CustomException;
+import com.WbReader.CustomExeptions.UserNotFoundException;
 import com.WbReader.Data.Book;
 import com.WbReader.Data.User;
 import com.WbReader.Services.BookService;
@@ -9,6 +11,7 @@ import com.WbReader.Services.UserService;
 import org.apache.xmlbeans.XmlException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +46,7 @@ public class MainController {
     }
 
     @GetMapping("/chooseBook/{id}")
-    public String chooseBook (@PathVariable Long id) throws BookNotFoundException {
+    public String chooseBook (@PathVariable Long id) throws CustomException {
         Book book = bookService.getBookById(id);
         bookService.setCurrentBook(book);
         LOGGER.debug("Выбор книги: {}", book.getTitle());
@@ -87,8 +90,8 @@ public class MainController {
     }
 
     @PostMapping ("/upload")
-    public String uploadFile (@RequestParam("file") MultipartFile file, Principal principal, Model model) throws IOException, XmlException {
-        User user = userService.findByUserName(principal.getName());
+    public String uploadFile (@RequestParam("file") MultipartFile file, Principal principal, Model model) throws IOException, XmlException, CustomException {
+        User user = userService.findByUserName(principal.getName()).orElseThrow(new UserNotFoundException("User not found"));
         System.err.println(user.getId() + "id");
         bookService.addBook(file, user);
         Book book = bookService.getCurrentBook();
@@ -123,7 +126,7 @@ public class MainController {
 //    }
 
     @PostMapping ("/delete/{id}")
-    public String deletBook (@PathVariable Long id, Model model) throws IOException, BookNotFoundException {
+    public String deletBook (@PathVariable Long id, Model model) throws IOException, CustomException {
         bookService.deleteBook(id);
         LOGGER.info("Удалена книга: id: {}", id);
         return "redirect:/account";
