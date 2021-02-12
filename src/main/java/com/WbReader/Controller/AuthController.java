@@ -1,5 +1,7 @@
 package com.WbReader.Controller;
 
+import com.WbReader.CustomExeptions.CustomException;
+import com.WbReader.CustomExeptions.UserNotFoundException;
 import com.WbReader.Data.Role;
 import com.WbReader.Data.User;
 import com.WbReader.Services.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,7 +35,10 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Principal principal) throws CustomException {
+        if (principal != null) {
+            return "redirect:/account";
+        }
         return "register";
     }
 

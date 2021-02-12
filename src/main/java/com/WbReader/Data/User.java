@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,10 +25,10 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "wbr_user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy="id", fetch = FetchType.LAZY)
-    Set<Book> books;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    Set<Book> books = new HashSet<>();
 
     public User() {
     }
@@ -85,5 +86,9 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
     }
 }

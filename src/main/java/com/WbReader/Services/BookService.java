@@ -19,13 +19,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 //@Scope("session")
 public class BookService {
 
-    Book currentBook;
-//    HashMap<String, Book> cuppentBookMap = new HashMap<>();
+//    Book currentBook;
+    ConcurrentHashMap<String, Book> currentBookMap = new ConcurrentHashMap<>();
 
     @Autowired
     BookRepo bookRepo;
@@ -67,21 +68,23 @@ public class BookService {
                 String url = uploadFileDir + "/" + tmpFileName;
                 book.setUrl(url);
                 book.setUser(user);
-                System.err.println("save " + book.getUser().getId());
                 bookRepo.save(book);
                 Files.copy(tmpFile, Paths.get(url));
                 Files.delete(tmpFile);
-                currentBook = book;
+                currentBookMap.put(user.getUsername(), book);
             }
             result = true;
         }
         return result;
     }
 
-    public boolean deleteBook(Long id) throws IOException, CustomException {
+    public boolean deleteBook(Long id, String username) throws IOException, CustomException {
         boolean result = false;
         Book book = bookRepo.findById(id).orElseThrow(new BookNotFoundException("Ошибка при удалении книги id: " + id));
         if (book != null) {
+            if (currentBookMap.get(username) != null) {
+                currentBookMap.remove(username);
+            }
             String url = book.getUrl();
             Files.delete(Paths.get(url));
             bookRepo.deleteById(id);
@@ -102,17 +105,17 @@ public class BookService {
         return bookList;
     }
 
-    public List<Book> getAllBooksByUsername (String username) {
-        User user = userRepo.findByUsername(username);
-        return bookRepo.findByUser(user);
+//    public List<Book> getAllBooksByUsername (String username) {
+//        User user = userRepo.findByUsername(username);
+//        return bookRepo.findByUser(user);
+//    }
+
+    public Book getCurrentBook(String username) {
+        return currentBookMap.get(username);
     }
 
-    public Book getCurrentBook() {
-        return currentBook;
-    }
-
-    public void setCurrentBook(Book currentBook) {
-        this.currentBook = currentBook;
+    public void setCurrentBook(String username, Book currentBook) {
+        currentBookMap.put(username, currentBook);
     }
 
 

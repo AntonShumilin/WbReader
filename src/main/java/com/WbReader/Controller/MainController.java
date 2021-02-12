@@ -37,26 +37,29 @@ public class MainController {
     Logger LOGGER;
 
     @GetMapping ("/account")
-    public String catalog (Model model, Principal principal) {
-
-//        model.addAttribute("bookList", bookService.getAllBooks());
-        model.addAttribute("bookList", bookService.getAllBooksByUsername(principal.getName()));
-        LOGGER.debug("Просмотр каталога");
+    public String catalog (Model model, Principal principal) throws CustomException {
+        User user = fromPrincipal(principal);
+//        model.addAttribute("bookList", bookService.getAllBooksByUsername(user.getUsername()));
+        model.addAttribute("bookList", user.getBooks());
+        LOGGER.debug("Просмотр каталога пользователя {}", user.getUsername());
+//        userService.deleteUser((long) 2);
         return "account";
     }
 
     @GetMapping("/chooseBook/{id}")
-    public String chooseBook (@PathVariable Long id) throws CustomException {
+    public String chooseBook (@PathVariable Long id, Principal principal) throws CustomException {
+        User user = fromPrincipal(principal);
         Book book = bookService.getBookById(id);
-        bookService.setCurrentBook(book);
-        LOGGER.debug("Выбор книги: {}", book.getTitle());
+        bookService.setCurrentBook(user.getUsername(), book);
+        LOGGER.debug("Пользователь {} выбрал книгу: {}", user.getUsername(), book.getTitle() );
         return "redirect:/page/1";
     }
 
     @GetMapping("/page/{pageNumber}")
-    public String page(@PathVariable int pageNumber, Model model) throws BookNotFoundException, IOException, XmlException {
+    public String page(@PathVariable int pageNumber, Model model, Principal principal) throws CustomException, IOException, XmlException {
 
-        Book book = bookService.getCurrentBook();
+        User user = fromPrincipal(principal);
+        Book book = bookService.getCurrentBook(user.getUsername());
         if (book != null) {
             List<String> linelist = Arrays.asList(book.getPage(pageNumber - 1).split("\\n"));
             model.addAttribute("lines", linelist);
@@ -65,7 +68,7 @@ public class MainController {
             model.addAttribute("title", book.getTitle());
             List<String> authorslist = Arrays.asList(book.getAuthor().split("\\n"));
             model.addAttribute("authors", authorslist);
-            LOGGER.trace("Страница: {} книга id {}", pageNumber, book.getId());
+            LOGGER.trace("Пользователь {} страница: {} книга id {}", user.getUsername(), pageNumber, book.getId());
             return "page";
         } else {
             throw new BookNotFoundException("Не выбрана текущая книга");
@@ -73,11 +76,13 @@ public class MainController {
     }
 
     @GetMapping("/content")
-    public String content (Model model) throws IOException, XmlException, BookNotFoundException {
-        Book book = bookService.getCurrentBook();
+    public String content (Model model, Principal principal) throws IOException, XmlException, CustomException {
+
+        User user = fromPrincipal(principal);
+        Book book = bookService.getCurrentBook(user.getUsername());
         if (book != null) {
            model.addAttribute("contentMap", book.getContent());
-           LOGGER.debug("Просмотр оглавления. книга id {}", book.getId());
+           LOGGER.debug("Пользователь {} просмотр оглавления. книга id {}", user.getUsername(), book.getId());
            return "content";
         } else {
             throw new BookNotFoundException("Не выбрана текущая книга");
@@ -91,12 +96,11 @@ public class MainController {
 
     @PostMapping ("/upload")
     public String uploadFile (@RequestParam("file") MultipartFile file, Principal principal, Model model) throws IOException, XmlException, CustomException {
-        User user = userService.findByUserName(principal.getName()).orElseThrow(new UserNotFoundException("User not found"));
-        System.err.println(user.getId() + "id");
+        User user = fromPrincipal(principal);
         bookService.addBook(file, user);
-        Book book = bookService.getCurrentBook();
+        Book book = bookService.getCurrentBook(user.getUsername());
         if (book != null) {
-            LOGGER.info("Загружена книга: {} {}, файл {}", book.getTitle(),
+            LOGGER.info("Пользователь {}, загружена книга: {} {}, файл {}", user.getUsername(), book.getTitle(),
                     book.getAuthor().replaceAll("\\n"," "),
                     Paths.get(book.getUrl()).getFileName().toString());
         }
@@ -126,9 +130,14 @@ public class MainController {
 //    }
 
     @PostMapping ("/delete/{id}")
-    public String deletBook (@PathVariable Long id, Model model) throws IOException, CustomException {
-        bookService.deleteBook(id);
-        LOGGER.info("Удалена книга: id: {}", id);
+    public String deletBook (@PathVariable Long id, Principal principal) throws IOException, CustomException {
+        User user = fromPrincipal(principal);
+        bookService.deleteBook(id, user.getUsername());
+        LOGGER.info("Пользователь {}, удалена книга: id: {}", user.getUsername(), id);
         return "redirect:/account";
+    }
+
+    User fromPrincipal (Principal principal) throws CustomException {
+        return userService.findByUserName(principal.getName()).orElseThrow(new UserNotFoundException("User not found"));
     }
 }

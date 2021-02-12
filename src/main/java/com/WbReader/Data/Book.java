@@ -25,8 +25,8 @@ public class Book {
     @Column
     private String url;
 
-    @ManyToOne (cascade=CascadeType.ALL)
-    @JoinColumn (name="user_id")
+    @ManyToOne
+    @JoinColumn(name="user_id")
     private User user;
 
     @Transient
@@ -101,7 +101,6 @@ public class Book {
     }
 
     public void setUser(User user) {
-        System.err.println("setUser" + user.getId());
         this.user = user;
     }
 

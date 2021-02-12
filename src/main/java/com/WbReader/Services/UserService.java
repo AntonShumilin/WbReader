@@ -21,9 +21,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     UserRepo userRepo;
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
@@ -34,10 +31,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<User> findByUserName(String username) {
-        User user = userRepo.findByUsername(username);
-        System.err.println(user);
-        return Optional.ofNullable(user);
-//        return Optional.ofNullable(userRepo.findByUsername(username));
+        return Optional.ofNullable(userRepo.findByUsername(username));
     }
 
     public void addNewUser(User user)  {
