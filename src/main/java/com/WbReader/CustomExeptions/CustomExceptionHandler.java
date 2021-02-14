@@ -23,6 +23,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(BookNotFoundException.class)
     public String handleBookNotFoundException(Throwable t, Model model) {
         LOGGER.error(t.getMessage(), t);
+        model.addAttribute("errMsg", t.getClass().toString());
         return "error";
     }
 
@@ -35,6 +36,7 @@ public class CustomExceptionHandler {
     })
     public String handleIOException(Throwable t, Model model) {
         LOGGER.error(t.getMessage(), t);
+        model.addAttribute("errMsg", t.getClass().toString());
         return "error";
     }
 }

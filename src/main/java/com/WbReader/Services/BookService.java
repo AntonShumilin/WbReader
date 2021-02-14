@@ -3,9 +3,9 @@ package com.WbReader.Services;
 import com.WbReader.CustomExeptions.BookNotFoundException;
 import com.WbReader.CustomExeptions.CustomException;
 import com.WbReader.Data.Book;
-import com.WbReader.Data.BookRepo;
+import com.WbReader.Repository.BookRepo;
 import com.WbReader.Data.User;
-import com.WbReader.Data.UserRepo;
+import com.WbReader.Repository.UserRepo;
 import org.apache.xmlbeans.XmlException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +25,10 @@ import java.util.concurrent.ConcurrentHashMap;
 //@Scope("session")
 public class BookService {
 
-//    Book currentBook;
     ConcurrentHashMap<String, Book> currentBookMap = new ConcurrentHashMap<>();
 
     @Autowired
     BookRepo bookRepo;
-
-    @Autowired
-    UserRepo userRepo;
-
-    @Autowired
-    Logger LOGGER;
 
     @Value("${app.filepath}")
     String uploadFileDir;
@@ -46,9 +39,7 @@ public class BookService {
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
-        Files.walkFileTree(path, new UploadDirFileVisitor());
-
-
+        Files.walkFileTree(path, new DeleteTmpFileVisitor());
     }
 
     public boolean addBook(MultipartFile userFile, User user) throws IOException, XmlException {

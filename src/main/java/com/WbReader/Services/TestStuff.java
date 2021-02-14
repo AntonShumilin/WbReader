@@ -2,6 +2,7 @@ package com.WbReader.Services;
 
 import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.security.oauth2.jwt.Jwt;
 import ru.gribuser.xml.fictionbook.x20.*;
 
 import java.io.File;
@@ -12,24 +13,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-class One {
-    Two twoProp;
-}
-
-class Two {
-    String threeProp;
-}
 
 public class TestStuff {
 
-    One oneProp;
-
-    @Value("${upload.dir.location}")
-    static String dd;
 
 
 
     public static void main(String[] args) throws IOException, XmlException {
+
+//        Jwt.withTokenValue().
 
 
 //

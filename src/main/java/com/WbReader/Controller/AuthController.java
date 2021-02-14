@@ -1,24 +1,18 @@
 package com.WbReader.Controller;
 
 import com.WbReader.CustomExeptions.CustomException;
-import com.WbReader.CustomExeptions.UserNotFoundException;
-import com.WbReader.Data.Role;
-import com.WbReader.Data.User;
 import com.WbReader.Services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class AuthController {
@@ -27,7 +21,7 @@ public class AuthController {
     UserService userService;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    CustomGoogleOAuthProvider customGoogleOAuthProvider;
 
     @GetMapping("/")
     public String greeting() {
@@ -35,7 +29,7 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String register(Principal principal) throws CustomException {
+    public String register(Principal principal){
         if (principal != null) {
             return "redirect:/account";
         }
@@ -58,18 +52,26 @@ public class AuthController {
             model.addAttribute("messageList", errorMsgList);
             return "register";
         }
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setRoles(Stream.of(Role.USER).collect(Collectors.toSet()));
-        userService.addNewUser(user);
-
+        userService.addNewUser(username, password, false);
         return "login";
+    }
+
+    @GetMapping("/oauth")
+    public String oauth (@RequestParam(name = "code", required = false) String code) throws CustomException {
+        if (code == null || code.isEmpty())  {
+            return "redirect:" + customGoogleOAuthProvider.getOAuthRequest();
+        } else {
+            String accessToken = customGoogleOAuthProvider.getAccessToken(code);
+            String email = customGoogleOAuthProvider.getUserUnfo(accessToken);
+            if (email != null && !email.isEmpty()) {
+                customGoogleOAuthProvider.authenticate(email);
+            }
+            return "redirect:/account";
+        }
     }
 
     @GetMapping("/admin")
     public String admin() {
         return "admin";
     }
-
 }
