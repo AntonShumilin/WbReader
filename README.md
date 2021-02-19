@@ -1,1 +1,2 @@
-# WbReader - тренировочный проект нп SpringBoot
+# WbReader
+Тренировочный проект на SpringBoot
