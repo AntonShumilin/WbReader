@@ -8,10 +8,10 @@
 		<version>2.3.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.PrimeReader</groupId>
-	<artifactId>PrimeReader</artifactId>
+	<groupId>com.WbReader</groupId>
+	<artifactId>WbReader</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PrimeReader</name>
+	<name>WbReader</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -19,25 +19,6 @@
 	</properties>
 
 	<dependencies>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter</artifactId>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security.oauth.boot</groupId>-->
-<!--			<artifactId>spring-security-oauth2-autoconfigure</artifactId>-->
-<!--			<version>2.4.2</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security</groupId>-->
-<!--			<artifactId>spring-security-oauth2-client</artifactId>-->
-<!--			<version>5.0.4.RELEASE</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-oauth2-client</artifactId>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -46,37 +27,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security.oauth</groupId>-->
-<!--			<artifactId>spring-security-oauth2</artifactId>-->
-<!--			<version>2.5.0.RELEASE</version>-->
-<!--		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-oauth2-client</artifactId>-->
-<!--			<version>2.4.2</version>-->
-<!--		</dependency>-->
-
-
-<!--		<dependency>-->
-<!--			<groupId>org.glassfish.jaxb</groupId>-->
-<!--			<artifactId>jaxb-runtime</artifactId>-->
-<!--			<version>2.3.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.sun.activation</groupId>-->
-<!--			<artifactId>javax.activation</artifactId>-->
-<!--			<version>1.2.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework</groupId>-->
-<!--			<artifactId>spring-oxm</artifactId>-->
-<!--			<version>5.0.4.RELEASE</version>-->
-<!--			<scope>compile</scope>-->
-<!--		</dependency>-->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -88,15 +38,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-configuration-processor</artifactId>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.xml.bind</groupId>-->
-<!--            <artifactId>jakarta.xml.bind-api</artifactId>-->
-<!--        </dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -106,7 +47,6 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.16</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
@@ -121,20 +61,13 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
-<!--		<dependency>-->
-<!--			<groupId>com.squareup.okhttp3</groupId>-->
-<!--			<artifactId>okhttp</artifactId>-->
-<!--			<version>4.9.1</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--			<artifactId>jackson-databind</artifactId>-->
-<!--			<version>2.5.1</version>-->
-<!--		</dependency>-->
-
-
-
+		<dependency>
+			<groupId>com.WbReader.schema</groupId>
+			<artifactId>com.WbReader.schema</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/xmltypes.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
