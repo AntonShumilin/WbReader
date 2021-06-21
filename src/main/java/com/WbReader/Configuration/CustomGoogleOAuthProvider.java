@@ -1,9 +1,11 @@
-package com.WbReader.Controller;
+package com.WbReader.Configuration;
 
 import com.WbReader.CustomExeptions.CustomException;
 import com.WbReader.CustomExeptions.UserNotFoundException;
-import com.WbReader.Data.Role;
 import com.WbReader.Data.User;
+import com.WbReader.Dto.Token;
+import com.WbReader.Dto.TokenRq;
+import com.WbReader.Dto.UserInfo;
 import com.WbReader.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -13,17 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CustomGoogleOAuthProvider {

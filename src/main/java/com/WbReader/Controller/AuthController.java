@@ -1,8 +1,8 @@
 package com.WbReader.Controller;
 
+import com.WbReader.Configuration.CustomGoogleOAuthProvider;
 import com.WbReader.CustomExeptions.CustomException;
 import com.WbReader.Services.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -24,8 +23,8 @@ public class AuthController {
     CustomGoogleOAuthProvider customGoogleOAuthProvider;
 
     @GetMapping("/")
-    public String greeting() {
-        return "greeting";
+    public String root() {
+        return "redirect:/account";
     }
 
     @GetMapping("/register")

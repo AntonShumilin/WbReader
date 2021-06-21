@@ -1,6 +1,5 @@
 package com.WbReader.CustomExeptions;
 
-import com.WbReader.CustomExeptions.BookNotFoundException;
 import org.apache.xmlbeans.XmlException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

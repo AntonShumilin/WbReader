@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.WbReader</groupId>
-	<artifactId>WbReader</artifactId>
+	<artifactId>WbReaderApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>WbReader</name>
 	<description>Demo project for Spring Boot</description>
@@ -31,12 +31,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,12 +56,18 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.WbReader.schema</groupId>
-			<artifactId>com.WbReader.schema</artifactId>
+			<groupId>com.WbReader</groupId>
+			<artifactId>schema</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/xmltypes.jar</systemPath>
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${project.basedir}/lib/xmltypes.jar</systemPath>-->
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.986</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -76,6 +76,47 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<fork>true</fork>-->
+<!--					<mainClass>${start-class}</mainClass>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<goals>-->
+<!--							<goal>repackage</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+
+<!--			<plugin>-->
+<!--				<artifactId>maven-assembly-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<descriptorRefs>-->
+<!--						<descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--					</descriptorRefs>-->
+<!--					<outputDirectory>${basedir}/target</outputDirectory>-->
+<!--					<finalName>server</finalName>-->
+<!--					<appendAssemblyId>false</appendAssemblyId>-->
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<mainClass>com.WbReader.WbReaderApplication</mainClass>-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>make-assembly</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>single</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 

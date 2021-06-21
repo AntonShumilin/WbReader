@@ -4,9 +4,10 @@ import com.WbReader.Services.BookParser;
 import org.apache.xmlbeans.XmlException;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Entity
 @Table(name="book")

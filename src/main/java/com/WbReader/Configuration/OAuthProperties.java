@@ -1,4 +1,4 @@
-package com.WbReader.Controller;
+package com.WbReader.Configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

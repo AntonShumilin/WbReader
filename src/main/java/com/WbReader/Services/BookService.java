@@ -3,11 +3,9 @@ package com.WbReader.Services;
 import com.WbReader.CustomExeptions.BookNotFoundException;
 import com.WbReader.CustomExeptions.CustomException;
 import com.WbReader.Data.Book;
-import com.WbReader.Repository.BookRepo;
 import com.WbReader.Data.User;
-import com.WbReader.Repository.UserRepo;
+import com.WbReader.Repository.BookRepo;
 import org.apache.xmlbeans.XmlException;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
